@@ -1,0 +1,28 @@
+.auth{
+    display:flex;
+    margin: 10px;
+}
+.auth p{
+    padding: 0 10px;
+}
+.auth a{
+    text-decoration: none;
+    color: blue;
+    font-weight:900;
+}
+
+.big{
+    position: absolute;
+    width: 500px;
+    height: 110px;
+    text-align: center;
+    left: calc(50vw - 250px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    top: calc(50vh - 50px);
+}
+.big h1{
+    text-transform: uppercase;
+}

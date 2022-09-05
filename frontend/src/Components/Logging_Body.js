@@ -1,37 +1,47 @@
 import React from 'react'
 import './Logging_Body.css'
 import axios from 'axios'
-import { useState} from 'react'
+import { useState ,useEffect} from 'react'
 import {useNavigate} from "react-router-dom";
 
 
 const Logging_Body = () => {
     let navigate = useNavigate();
-
-
-    const [UserName , setUserName] = useState('')
+    const [Pressed ,setPressed] = useState(false)
+    const [PostName , setPostName] = useState('')
 
     const api = axios.create({
         baseURL: '/api/'
     })
 
-
+    document.addEventListener("keydown",function(event){
+        if(event.code === "Enter")
+        {
+            setPressed(true);
+        }
+    })
     function OnvalueChanged(event){
-        setUserName(event.target.value)
+        setPostName(event.target.value)
     }
-
-
+    // eslint-disable-next-line
     const Login = async ()=>{
-        let res = await api.post(`login/${UserName}/`)
-        navigate(`verrify/${UserName}`)
+        let res = await api.post(`login/${PostName}/`)
         if(res.data.code === '305'){
-            alert("You are not one of our customer :/")
+            alert("username or email is incorrect")
+        }
+        else
+        {
+            navigate(`verrify/${res.data.email}`,{state:{email:res.data.email ,user_name:res.data.user_name}})
         }
 
     };
-
-
-
+    useEffect(()=>{
+        if(Pressed === true)
+        {
+            Login()
+            setPressed(false)
+        }
+    },[Pressed,Login])
 
   return (
     <div className='log-body'>
@@ -42,7 +52,7 @@ const Logging_Body = () => {
             <label for='user'>Email or Username :</label>
             <input type={'text'} id='user' placeholder='nishantodoapp@gmail.com' onChange={OnvalueChanged}/> 
         </div>
-        <button className='btn-login' onClick={()=>Login()}>LogIn</button>
+        <button type='submit' className='btn-login' onClick={Login}>LogIn</button>
 
         <div className='signup'>
             <p><a href='https://google.com' target={'__blank'}>Create Account .</a></p>

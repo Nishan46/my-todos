@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Login from "./Pages/login";
 import Account from "./Pages/Account";
 import Verrify from "./Pages/Verrify";
+import AuthError from "./Pages/AuthError";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='account/:email' element={<Account/>}/>
-          <Route path='/verrify/:email' element={<Verrify/>}/>
+          <Route path='verrify/:email' element={<Verrify/>}/>
+          <Route path='authentication_error/' element={<AuthError/>}/>
         </Routes>
       </Router>
     </div>

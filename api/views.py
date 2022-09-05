@@ -1,4 +1,4 @@
-import json
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import UserSerializer
@@ -7,6 +7,7 @@ from .Mailer import MAIL
 from . import models
 from . tokenGen import get_token
 from api import serializers
+from django.http import HttpResponse ,HttpResponseRedirect
 
 # Create your views here.
 @api_view(['GET'])
@@ -48,7 +49,12 @@ def CREATE_USER(request):
 @api_view(['POST','GET'])
 def Login(request,mail):
     try:
-        User = Custom_User.objects.get(email = mail)
+        ex = Custom_User.objects.filter(email = mail).count()
+        if ex:
+            User = Custom_User.objects.get(email = mail)
+        else:
+            User = Custom_User.objects.get(user_name = mail)
+        
         User.token = get_token()
         User.save()
         serializer = UserSerializer(User,many=False)
@@ -59,14 +65,11 @@ def Login(request,mail):
             "SUBJECT":"LogIn Key",
             "BODY":f"Use this key to Login\n{serializer.data.get('token')}"
             }
-            
-        # my_mail = MAIL(mail_data)
-        # print(my_mail.SEND())
 
         return Response({
                 'code':'200',
-                "token":serializer.data.get('token')
-                
+                'email':serializer.data.get('email'),
+                'user_name':serializer.data.get('user_name')    
             })
     except models.Custom_User.DoesNotExist as ex:
         return Response({
@@ -77,4 +80,8 @@ def Login(request,mail):
             'message':'un handled exception - ' + str(ex),
             'code':'525'
         })
+
+@api_view(['POST','GET'])
+def Verrify(request,token):
+    return HttpResponse(f'token is {token} and email is {request.nishan}')
 
