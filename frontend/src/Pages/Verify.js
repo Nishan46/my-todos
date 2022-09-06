@@ -19,7 +19,7 @@ function Verify() {
   useEffect(()=>{
     if(state === null)
     {
-      navigate('/authentication_error')
+      navigate('../authentication_error')
     }
 
   },[navigate,state])

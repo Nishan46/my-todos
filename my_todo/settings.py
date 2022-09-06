@@ -23,6 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@g6+thyhrj0%4(c0&+q1*+0wic97f!xrb7ntlgpmul%!!j!5*6'
 API_KEY = 'HFODMeskdjeu_fkfjrheuDFKE9404821DFRRRDFGEGLOM0'
 
+FRONTEND_LINK = 'http://localhost:3000'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

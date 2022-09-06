@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 
 const Logging_Body = () => {
-    const baseURL = `${window.location.origin.toString()}`
+
     let navigate = useNavigate();
     const [Pressed ,setPressed] = useState(false)
     const [PostName , setPostName] = useState('')
@@ -28,17 +28,15 @@ const Logging_Body = () => {
     }
     // eslint-disable-next-line
     const Login = async ()=>{
-        const postData = {
-            "uri":baseURL
-        }        
-        let res = await api.get(`login/${PostName}`,postData)
+        
+        let res = await api.get(`${PostName}`)
         console.log(res.data)
         if(res.data.code === '305'){
             alert("username or email is incorrect")
         }
         else if(res.data.code ==='200')
         {
-            navigate(`verrify/${res.data.email}`,{state:{email:res.data.email ,user_name:res.data.user_name}})
+            navigate(`../verrify/${res.data.email}`,{state:{email:res.data.email ,user_name:res.data.user_name}})
         }
 
     };

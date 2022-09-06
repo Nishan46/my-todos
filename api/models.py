@@ -14,7 +14,7 @@ class Custom_User(models.Model):
 
 class Todo(models.Model):
     user = models.ForeignKey(Custom_User,on_delete=models.CASCADE)
-    todo =  models.CharField(max_length=100 , primary_key=True)
+    todo =  models.CharField(max_length=100 )
 
 
     def __str__(self):

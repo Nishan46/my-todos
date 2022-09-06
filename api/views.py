@@ -2,14 +2,14 @@
 from urllib import response
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import UserSerializer
-from .models import Custom_User
+from .serializers import UserSerializer , TodoSerializer
+from .models import Custom_User, Todo
 from .Mailer import MAIL
 from . import models
 from . tokenGen import get_token
 from api import serializers
 from django.http import HttpResponse ,HttpResponseRedirect
-from my_todo.settings import API_KEY
+from my_todo.settings import API_KEY , FRONTEND_LINK
 
 # Create your views here.
 @api_view(['GET'])
@@ -71,25 +71,23 @@ def Login(request,mail,key):
 
                         Welcome {serializer.data.get('user_name')},\n
                         use this link to login,\n
-                        verify here : {request.data.get('uri')}/users/{serializer.data.get('email')}/{serializer.data.get('token')}\n
+                        verify here : {FRONTEND_LINK}/users/{serializer.data.get('email')}/{serializer.data.get('token')}\n
 
                         Thank You ...
                     """
                     }
                 
-                # myMail = MAIL(mail_data)
-                # myMail.SEND()
+                myMail = MAIL(mail_data)
+                myMail.SEND()
                 return Response({
                         'code':'200',
                         'email':serializer.data.get('email'),
-                        'user_name':serializer.data.get('user_name'),
-                        'key':key    
+                        'user_name':serializer.data.get('user_name'), 
                     })
 
             else:
                 return Response({
-                    "tt":"Hellow there ...",
-                    "key":key
+                    "message":"Hellow there ... nothing to see here",
                 })
         except models.Custom_User.DoesNotExist as ex:
             return Response({
@@ -108,15 +106,81 @@ def Login(request,mail,key):
 
 
 @api_view(['POST','GET'])
-def Verify(request,token):
-    ex = Custom_User.objects.filter(token = token).count()
-    if ex:
-        User = Custom_User.objects.get(token = token)
-        new_tok = get_token()
-        User.token = new_tok
-        User.save()
-        serializer = UserSerializer(User ,many=False)
-        return Response({
-            "":""            
+def Verify(request,tokken,key):
+    if key == API_KEY:
+        try:
+             User = Custom_User.objects.get(token = tokken)
+             serializer = UserSerializer(User ,many=False)
+             return Response({
+                'code':'200',
+                'data':serializer.data
+             })
+
+        except models.Custom_User.DoesNotExist as ex:
+            return Response({
+                    'code':'305'
+                })
+        except Exception as ex:
+            return Response({
+                'message':'un handled exception - ' + str(ex),
+                'code':'525'
+            })
+    else:
+        response({
+            "code":"503",
+            "message":"KEY IS NOT VALID"
         })
 
+@api_view(['GET'])
+def Get_Todo(request,token,key):
+    if key == API_KEY:
+        try:
+            User = Custom_User.objects.get(token = token)
+            Todos = Todo.objects.all()
+            todos = Todos.filter(user = User)
+            serializer = TodoSerializer(todos,many=True)
+            return Response(serializer.data)
+
+
+        except models.Custom_User.DoesNotExist as ex:
+            return Response({
+                    'code':'305'
+                })
+        except Exception as ex:
+            return Response({
+                'message':'un handled exception - ' + str(ex),
+                'code':'525'
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@api_view(['GET'])
+def test_a(request):
+    return Response({
+        "message":"congratas!"
+    })
