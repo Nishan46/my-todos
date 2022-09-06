@@ -5,13 +5,16 @@ import { useState ,useEffect} from 'react'
 import {useNavigate} from "react-router-dom";
 
 
+
+
 const Logging_Body = () => {
+    const baseURL = `${window.location.origin.toString()}`
     let navigate = useNavigate();
     const [Pressed ,setPressed] = useState(false)
     const [PostName , setPostName] = useState('')
 
     const api = axios.create({
-        baseURL: '/api/'
+        baseURL: 'http://localhost:5458/api/'
     })
 
     document.addEventListener("keydown",function(event){
@@ -25,11 +28,15 @@ const Logging_Body = () => {
     }
     // eslint-disable-next-line
     const Login = async ()=>{
-        let res = await api.post(`login/${PostName}/`)
+        const postData = {
+            "uri":baseURL
+        }        
+        let res = await api.get(`login/${PostName}`,postData)
+        console.log(res.data)
         if(res.data.code === '305'){
             alert("username or email is incorrect")
         }
-        else
+        else if(res.data.code ==='200')
         {
             navigate(`verrify/${res.data.email}`,{state:{email:res.data.email ,user_name:res.data.user_name}})
         }

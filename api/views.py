@@ -1,4 +1,5 @@
 
+from urllib import response
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import UserSerializer
@@ -8,6 +9,7 @@ from . import models
 from . tokenGen import get_token
 from api import serializers
 from django.http import HttpResponse ,HttpResponseRedirect
+from my_todo.settings import API_KEY
 
 # Create your views here.
 @api_view(['GET'])
@@ -47,41 +49,74 @@ def CREATE_USER(request):
     
 
 @api_view(['POST','GET'])
-def Login(request,mail):
-    try:
-        ex = Custom_User.objects.filter(email = mail).count()
-        if ex:
-            User = Custom_User.objects.get(email = mail)
-        else:
-            User = Custom_User.objects.get(user_name = mail)
-        
-        User.token = get_token()
-        User.save()
-        serializer = UserSerializer(User,many=False)
-        mail_data = {
-            "SENDER":"nishantodoapp@gmail.com",
-            "APP_PASSWORD":"svlccgflvnorsjyn",
-            "RECIEVER":serializer.data.get('email'),
-            "SUBJECT":"LogIn Key",
-            "BODY":f"Use this key to Login\n{serializer.data.get('token')}"
-            }
+def Login(request,mail,key):
+    if API_KEY == key:
+        try:
+            if request.method == 'POST':
+                ex = Custom_User.objects.filter(email = mail).count()
+                if ex:
+                    User = Custom_User.objects.get(email = mail)
+                else:
+                    User = Custom_User.objects.get(user_name = mail)
+                
+                User.token = get_token()
+                User.save()
+                serializer = UserSerializer(User,many=False)
+                mail_data = {
+                    "SENDER":"nishantodoapp@gmail.com",
+                    "APP_PASSWORD":"svlccgflvnorsjyn",
+                    "RECIEVER":serializer.data.get('email'),
+                    "SUBJECT":"LogIn Key",
+                    "BODY":f"""
 
-        return Response({
-                'code':'200',
-                'email':serializer.data.get('email'),
-                'user_name':serializer.data.get('user_name')    
+                        Welcome {serializer.data.get('user_name')},\n
+                        use this link to login,\n
+                        verify here : {request.data.get('uri')}/users/{serializer.data.get('email')}/{serializer.data.get('token')}\n
+
+                        Thank You ...
+                    """
+                    }
+                
+                # myMail = MAIL(mail_data)
+                # myMail.SEND()
+                return Response({
+                        'code':'200',
+                        'email':serializer.data.get('email'),
+                        'user_name':serializer.data.get('user_name'),
+                        'key':key    
+                    })
+
+            else:
+                return Response({
+                    "tt":"Hellow there ...",
+                    "key":key
+                })
+        except models.Custom_User.DoesNotExist as ex:
+            return Response({
+                    'code':'305'
+                })
+        except Exception as ex:
+            return Response({
+                'message':'un handled exception - ' + str(ex),
+                'code':'525'
             })
-    except models.Custom_User.DoesNotExist as ex:
-        return Response({
-                'code':'305'
-            })
-    except Exception as ex:
-        return Response({
-            'message':'un handled exception - ' + str(ex),
-            'code':'525'
+    else:
+        response({
+            "code":"503",
+            "message":"KEY IS NOT VALID"
         })
 
+
 @api_view(['POST','GET'])
-def Verrify(request,token):
-    return HttpResponse(f'token is {token} and email is {request.nishan}')
+def Verify(request,token):
+    ex = Custom_User.objects.filter(token = token).count()
+    if ex:
+        User = Custom_User.objects.get(token = token)
+        new_tok = get_token()
+        User.token = new_tok
+        User.save()
+        serializer = UserSerializer(User ,many=False)
+        return Response({
+            "":""            
+        })
 
