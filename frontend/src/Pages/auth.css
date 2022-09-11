@@ -22,6 +22,7 @@
     justify-content: center;
     font-size: 25px;
     top: calc(50vh - 50px);
+    overflow: hidden;
 }
 .big h1{
     text-transform: uppercase;

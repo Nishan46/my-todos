@@ -24,9 +24,16 @@ app.route('/api/verify/:token').get(async (request,response)=>{
 });
 
 app.route('/api/get-todo/:token').get(async (request,response)=>{
-    const responseBy = await axios.get(`http://127.0.0.1:8000/api/get-todo/${request.params.token}/${process.env.API_KEY}`)
+    try{
+        const responseBy = await axios.get(`http://127.0.0.1:8000/api/get-todo/${request.params.token}/${process.env.API_KEY}`)
     response.json(responseBy.data)
-    console.log(responseBy)
+    responseBy.data.map((items)=>{
+        console.log({'todo':items.todo})
+    })
+    }
+    catch(err ){
+        console.log(err.message)
+    }
 });
 
 

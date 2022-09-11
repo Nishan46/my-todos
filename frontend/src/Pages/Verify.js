@@ -35,7 +35,7 @@ function Verify() {
             <p id='email_id'>{email}</p>
             <p>please check this up</p>
         </div>
-        <a className='mails' href='https://gmail.com' target={'_parent'}><p><i class="fa fa-google" style={{padding:'0 5px', color: 'rgb(161, 161, 161)'}}></i>Gmail.com</p></a>
+        <a className='mails' href='https://gmail.com' target={'_parent'}><i class="fa fa-google" style={{padding:'0 5px', color: 'rgb(161, 161, 161)'}}></i>Gmail.com</a>
     </div>
   )
 }

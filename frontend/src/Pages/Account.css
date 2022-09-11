@@ -1,0 +1,216 @@
+@keyframes firstShow{
+    0%{opacity: 0;}
+    100%{opacity: 1;}
+}
+@keyframes secondShow{
+    0%{opacity: 0; left: 100%;}
+    20%{opacity: 0; left: 60%;}
+    100%{opacity: 1;left: 10%;}
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 20px;
+  }
+  
+  /* Track */
+::-webkit-scrollbar-track {
+    margin:0 20px;
+    border-radius: 20px;
+
+    
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #000000; 
+}
+
+.Account-body{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgb(0, 0, 0,0.4);
+}
+
+
+.header_todo{
+    padding: 5px 20px;
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 90vw;
+    border: none;
+    border-bottom: 2px solid black;
+    border-bottom-style:dashed;
+}
+.header_todo h1{
+    text-transform: uppercase;
+    flex: 1;
+}
+.header_todo a{
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+}
+.header_todo a:hover{
+    color: white;
+    font-size: 1.09em;
+    
+}
+
+.adder-body{
+    opacity: 0;
+    width: 50%;
+    margin: 50px auto;
+    display: flex;
+    border-radius: 10px;
+    height: 100px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    animation: firstShow 2s  forwards;
+}
+
+.adder{
+    width: 90%;
+    margin: 0 auto;
+    padding: 2%;
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    color: white;
+    font-weight: 800;
+}
+.adder #todo-text{
+    flex: 1;
+    margin: 0 20px;
+    padding: 5px;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid rgb(212, 201, 201);
+    font-size: 1.2em;
+    color: white;
+    font-weight: 800;
+}
+
+.todo-container{
+    position: absolute;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    width: 80%;
+    top: 20%;
+    bottom: 0;
+    /* background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px); */
+    border-radius: 50px;
+    margin-top:50px;
+    align-items: center;
+    opacity: 0;
+    animation: secondShow 0.5s 1s forwards;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-top-right-radius:8px;
+    border-bottom-right-radius: 8px;
+
+}
+
+.todos{
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    width: 85%;
+    height: fit-content;
+    padding: 5px 0;
+    position: relative;
+    font-size: 2.0rem;
+    border-bottom: 2px solid  rgb(255, 255, 255);
+    overflow-y: hidden;
+}
+
+.todos .todo-s{
+    flex: 1;
+    font-weight: 900;
+    padding: 10px;
+    margin-right: 50px;
+    color: rgb(10, 3, 22);
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.todos .done-todo-s{
+    flex: 1;
+    font-weight: 900;
+    padding: 10px;
+    margin-right: 50px;
+    color: #ffffff;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: line-through 2px solid rgb(86, 72, 204);
+}
+
+.todos:hover .todo-s{
+    color: rgb(185, 32, 32);
+}
+.todos:hover .done-todo-s{
+    color: rgb(0, 0, 0);
+}
+
+
+.todos #id{
+    color:  rgb(10, 3, 22);
+    font-size: 2.5rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+.todos:hover #id{
+    color: rgb(185, 32, 32);
+
+}
+
+.todos #id_done{
+    color:  rgb(255, 255, 255);
+    font-size: 2.5rem;
+    font-weight: 900;
+    cursor: pointer;
+    text-decoration: line-through 2px solid rgb(86, 72, 204);
+
+
+}
+
+.todos:hover #id_done{
+    color: #000000;
+}
+
+.todos button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 10px;
+    color: rgb(10, 3, 22);
+}
+.todos #btn-done:hover{
+    color: rgb(86, 72, 204);
+}
+.todos #btn-done-already{
+    color: rgb(86, 72, 204);
+}
+.todos #btn-delete:hover{
+    color: hwb(350 24% 30%);
+}
+.todos #btn-edit:hover{
+    color: rgb(75, 202, 50);
+}

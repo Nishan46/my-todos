@@ -1,4 +1,5 @@
 import email
+from math import fabs
 from django.db import models
 
 # Create your models here.
@@ -15,7 +16,7 @@ class Custom_User(models.Model):
 class Todo(models.Model):
     user = models.ForeignKey(Custom_User,on_delete=models.CASCADE)
     todo =  models.CharField(max_length=100 )
-
+    done = models.BooleanField(default=False)
 
     def __str__(self):
         return '{} from {}'.format(self.todo , self.user.Name)
